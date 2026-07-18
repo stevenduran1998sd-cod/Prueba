@@ -3,317 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Calculadora de Créditos Colombia (V2.0)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Dusan Urban | Moda Masculina Premium</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* --- VARIABLES DE DISEÑO (Basadas en el Logo) --- */
+        :root {
+            --bg-dark: #0d0d0d;
+            --bg-card: #141414;
+            --gold-primary: #cca43b;
+            --gold-gradient: linear-gradient(135deg, #dfba5f 0%, #b38f2d 100%);
+            --text-light: #ffffff;
+            --text-gray: #aaaaaa;
+            --font-main: 'Montserrat', sans-serif;
+        }
+
+        /* --- RESET & BASIC STYLES --- */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
+
         body {
-            background-color: #0f172a;
-            color: #f1f5f9;
-            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-main);
+            overflow-x: hidden;
         }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #1e293b;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
+
+        a {
+            text-decoration: none;
+            color: inherit;
         }
-        header {
-            text-align: center;
-            margin-bottom: 35px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 25px;
-        }
-        h1 { color: #38bdf8; font-size: 28px; margin-bottom: 8px; }
-        p.subtitle { color: #94a3b8; font-size: 14px; }
-        .badge {
-            background: #0284c7;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+
+        /* --- COMPONENTES REUTILIZABLES --- */
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #000;
+            padding: 12px 30px;
             font-weight: 600;
-            vertical-align: middle;
-            margin-left: 8px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 35px;
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(204, 164, 59, 0.3);
         }
-        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-        .form-group {
-            margin-bottom: 22px;
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            position: relative;
         }
-        label {
+
+        .section-title::after {
+            content: '';
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #94a3b8;
-            font-size: 14px;
+            width: 60px;
+            height: 3px;
+            background: var(--gold-gradient);
+            margin: 15px auto 0;
         }
-        input, select {
+
+        /* --- HEADER & NAV --- */
+        header {
+            position: fixed;
+            top: 0;
             width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #475569;
-            border-radius: 8px;
-            font-size: 15px;
-            background-color: #0f172a;
-            color: white;
-            transition: all 0.3s;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-        }
-        .results-box {
-            background-color: #0f172a;
-            border-radius: 12px;
-            padding: 25px;
-            border-top: 4px solid #38bdf8;
-        }
-        .result-item {
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #334155;
+            align-items: center;
         }
-        .result-item:last-child { border-bottom: none; }
-        .result-label { font-weight: 500; color: #94a3b8; }
-        .result-value { font-weight: 700; color: #f8fafc; font-size: 18px; }
-        .highlight { color: #34d399; font-size: 22px; }
-        .info-card {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #cbd5e1;
-            line-height: 1.6;
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
-        .tabs-container {
+
+        .logo-text span {
+            color: var(--gold-primary);
+            font-weight: 300;
+        }
+
+        .nav-menu {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: #0f172a;
-            padding: 6px;
-            border-radius: 8px;
+            list-style: none;
+            gap: 30px;
         }
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
+
+        .nav-menu a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--gold-primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            /* Reemplazar con una foto de stock urbana real si se desea */
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1920') no-repeat center center/cover;
+            padding: 20px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .hero-logo-placeholder {
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--gold-primary);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--gold-primary);
+            background: #111;
+            box-shadow: 0 0 20px rgba(204, 164, 59, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--gold-primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* --- CATEGORIES --- */
+        .categories {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+
+        .category-card:hover {
+            transform: scale(1.02);
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .category-content h3 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .category-content a {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--gold-primary);
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s;
+            letter-spacing: 1px;
         }
-        .tab-btn.active {
-            background: #38bdf8;
-            color: #0f172a;
+
+        /* --- PRODUCTS HIGHLIGHT --- */
+        .products {
+            padding: 100px 20px;
+            background-color: #080808;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: translateY 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-color: rgba(204, 164, 59, 0.2);
+        }
+
+        .product-img {
+            height: 320px;
+            background-size: cover;
+            background-position: center;
+            background-color: #222;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-info h4 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .product-price {
+            color: var(--gold-primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- SHOWROOM / UBICACION --- */
+        .showroom {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .showroom-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+
+        .showroom-info h3 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .showroom-info p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .location-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .location-detail i {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+
+        .map-placeholder {
+            height: 350px;
+            background: #141414;
+            border: 1px solid rgba(204, 164, 59, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #050505;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, color 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .social-icons a:hover {
+            background: var(--gold-gradient);
+            color: #000;
+        }
+
+        /* --- WHATSAPP FLOATING BUTTON --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; } /* Simplificación para landing básica */
+            .hero h1 { font-size: 2.3rem; }
+            .section-title { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Simulador Multicrédito Colombiano <span class="badge">V2.0 PRO</span></h1>
-            <p class="subtitle">Simulación avanzada: Vivienda, Vehículo, Consumo y Tarjetas con tasas de usura y seguros estimados</p>
-        </header>
 
-        <div class="tabs-container">
-            <button class="tab-btn active" onclick="cambiarTipo('hipotecario')">🏠 Hipotecario / Leasing</button>
-            <button class="tab-btn" onclick="cambiarTipo('vehiculo')">🚗 Vehículo</button>
-            <button class="tab-btn" onclick="cambiarTipo('libre')">💰 Libre Inversión</button>
-            <button class="tab-btn" onclick="cambiarTipo('tarjeta')">💳 Tarjeta de Crédito</button>
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/573000000000?text=Hola%20Dusan%20Urban,%20quiero%20ver%20el%20catálogo" class="whatsapp-float" target="_blank" aria-label="Contacto de WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- HEADER -->
+    <header>
+        <div class="nav-container">
+            <div class="logo-text">DUSAN <span>URBAN</span></div>
+            <ul class="nav-menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#categorias">Colecciones</a></li>
+                <li><a href="#destacados">Destacados</a></li>
+                <li><a href="#visitanos">Visítanos</a></li>
+            </ul>
         </div>
-        
-        <div class="grid">
-            <div>
-                <div class="form-group">
-                    <label id="lblMonto" for="montoPrincipal">Monto Total del Crédito / Valor Inmueble ($ COP)</label>
-                    <input type="number" id="montoPrincipal" value="150000000" step="5000000">
-                </div>
-                
-                <div class="form-group" id="divCuotaInicial">
-                    <label for="cuotaInicial">Cuota Inicial ($ COP)</label>
-                    <input type="number" id="cuotaInicial" value="45000000" step="5000000">
-                </div>
+    </header>
 
-                <div class="form-group" id="divAmortizacion">
-                    <label for="tipoSistema">Modalidad de Moneda</label>
-                    <select id="tipoSistema">
-                        <option value="pesos">Pesos Colombianos (Cuota Fija)</option>
-                        <option value="uvr">UVR (Indexado a Inflación / IPC)</option>
-                    </select>
-                </div>
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <!-- Icono simulando el águila del logo de forma minimalista mientras se carga la imagen -->
+            <div class="hero-logo-placeholder">
+                <i class="fa-solid fa-eagle"><img src="tu-logo.png" alt="D" style="width:100%; height:100%; object-fit:contain; display:none;">D</i>
+            </div>
+            <h1>Estilo con <span>Carácter</span></h1>
+            <p>Diseño exclusivo, cortes premium y la actitud urbana que te define.</p>
+            <a href="#categorias" class="btn-gold">Explorar Colección</a>
+        </div>
+    </section>
 
-                <div class="form-group">
-                    <label for="tasaAnual">Tasa de Interés Nominal/Efectiva Propuesta (E.A. %)</label>
-                    <input type="number" id="tasaAnual" value="11.8" step="0.05">
-                </div>
-
-                <div class="form-group">
-                    <label id="lblPlazo" for="plazo">Plazo de Amortización (Meses)</label>
-                    <input type="number" id="plazo" value="180" min="1" max="360">
-                </div>
-
-                <div class="form-group">
-                    <label for="seguroMes">Seguro de Vida Obligatorio + Todo Riesgo Estimado (Mensual $ COP)</label>
-                    <input type="number" id="seguroMes" value="45000" step="5000">
+    <!-- CATEGORIES SECTION -->
+    <section class="categories" id="categorias">
+        <h2 class="section-title">Categorías Urbanas</h2>
+        <div class="grid-categories">
+            <!-- Tarjeta 1 -->
+            <div class="category-card" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1618886614638-80e3c103d31a?q=80&w=600');">
+                <div class="category-content">
+                    <h3>Camisas & Outfits</h3>
+                    <a href="https://wa.me/573000000000">Ver Modelos <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
-            
-            <div>
-                <h2 style="font-size: 18px; margin-bottom: 15px; color: #38bdf8;">Análisis Financiero del Escenario</h2>
-                <div class="results-box">
-                    <div class="result-item">
-                        <span class="result-label">Capital Neto a Financiar</span>
-                        <span class="result-value" id="resFinanciar">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Tasa Periódica Mes Vencido (M.V.)</span>
-                        <span class="result-value" id="resTasaMes">0.00%</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Cuota Base (Solo Capital + Interés)</span>
-                        <span class="result-value" id="resCuotaBase">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Seguros Mensuales Adicionados</span>
-                        <span class="result-value" id="resSeguro">$ 0</span>
-                    </div>
-                    <div class="result-item" style="background: rgba(52, 211, 153, 0.05); padding: 10px; border-radius: 6px;">
-                        <span class="result-label" style="color: #34d399; font-weight: 600;">CUOTA MENSUAL TOTAL</span>
-                        <span class="result-value highlight" id="resCuotaTotal">$ 0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Costo Total de Intereses Generados</span>
-                        <span class="result-value" id="resIntereses">$ 0</span>
-                    </div>
+            <!-- Tarjeta 2 -->
+            <div class="category-card" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=600');">
+                <div class="category-content">
+                    <h3>Jeans Premium</h3>
+                    <a href="https://wa.me/573000000000">Ver Modelos <i class="fas fa-arrow-right"></i></a>
                 </div>
-                
-                <div class="info-card" id="infoDinamica">
-                    <strong>Análisis del Sistema:</strong> Los créditos hipotecarios en Colombia permiten plazos amplios y tasas competitivas. Recuerde validar si aplica a subsidios del gobierno (Mi Casa Ya / Cobertura FRECH).
+            </div>
+            <!-- Tarjeta 3 -->
+            <div class="category-card" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600');">
+                <div class="category-content">
+                    <h3>Chubasqueros & Chaquetas</h3>
+                    <a href="https://wa.me/573000000000">Ver Modelos <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        let tipoCreditoActivo = 'hipotecario';
+    <!-- PRODUCTS HIGHLIGHT SECTION -->
+    <section class="products" id="destacados">
+        <div class="products-container">
+            <h2 class="section-title">Lo Más Vendido</h2>
+            <div class="grid-products">
+                
+                <!-- Producto 1 -->
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=400');"></div>
+                    <div class="product-info">
+                        <h4>Camisa Slim Fit Dark</h4>
+                        <div class="product-price">$ 85.000</div>
+                        <a href="https://wa.me/573000000000?text=Me%20interesa%20la%20Camisa%20Slim%20Fit%20Dark" class="btn-gold" target="_blank">Pedir por WA</a>
+                    </div>
+                </div>
 
-        function cambiarTipo(tipo) {
-            tipoCreditoActivo = tipo;
+                <!-- Producto 2 -->
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=400');"></div>
+                    <div class="product-info">
+                        <h4>Black Denim Premium</h4>
+                        <div class="product-price">$ 120.000</div>
+                        <a href="https://wa.me/573000000000?text=Me%20interesa%20el%20Black%20Denim%20Premium" class="btn-gold" target="_blank">Pedir por WA</a>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="product-card">
+                    <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?q=80&w=400');"></div>
+                    <div class="product-info">
+                        <h4>Chaqueta Urbana Gold</h4>
+                        <div class="product-price">$ 160.000</div>
+                        <a href="https://wa.me/573000000000?text=Me%20interesa%20la%20Chaqueta%20Urbana%20Gold" class="btn-gold" target="_blank">Pedir por WA</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOWROOM / LOCATION SECTION -->
+    <section class="showroom" id="visitanos">
+        <div class="showroom-wrapper">
+            <div class="showroom-info">
+                <h3>Visita Nuestro Showroom</h3>
+                <p>Vive la experiencia completa de probarte las prendas con la mejor asesoría del centro de la ciudad. Ropa con horma perfecta y materiales de alta calidad.</p>
+                
+                <div class="location-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <strong>Ubicación:</strong><br>
+                        Centro de Barranquilla, Centro Comercial Colombia.
+                    </div>
+                </div>
+                <div class="location-detail">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Horario de Atención:</strong><br>
+                        Lunes a Sábado: 9:00 AM - 7:00 PM
+                    </div>
+                </div>
+            </div>
             
-            // Actualizar botones de pestañas
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            <div class="map-placeholder">
+                <i class="fas fa-store" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 15px;"></i>
+                <h4>Centro Comercial Colombia</h4>
+                <p style="color: var(--text-gray); font-size:0.9rem; margin-top:5px;">Barranquilla, Colombia</p>
+                <!-- Cuando tengas el link de Google Maps puedes meter un <iframe> aquí fácilmente -->
+                <a href="https://maps.google.com" target="_blank" class="btn-gold" style="margin-top:20px; padding:8px 20px; font-size:0.8rem;">Ver en Maps</a>
+            </div>
+        </div>
+    </section>
 
-            // Modificar visibilidad y valores sugeridos según la modalidad colombiana estándar
-            const divCuotaInicial = document.getElementById('divCuotaInicial');
-            const divAmortizacion = document.getElementById('divAmortizacion');
-            const lblMonto = document.getElementById('lblMonto');
-            const lblPlazo = document.getElementById('lblPlazo');
-            
-            if (tipo === 'hipotecario') {
-                lblMonto.textContent = "Valor del Inmueble ($ COP)";
-                lblPlazo.textContent = "Plazo de Amortización (Meses)";
-                divCuotaInicial.style.display = 'block';
-                divAmortizacion.style.display = 'block';
-                document.getElementById('montoPrincipal').value = "150000000";
-                document.getElementById('cuotaInicial').value = "45000000";
-                document.getElementById('tasaAnual').value = "11.5";
-                document.getElementById('plazo').value = "240";
-                document.getElementById('seguroMes').value = "55000";
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Financiamiento máx del 70% para vivienda NO VIS y 80% para VIS. Estabilidad a largo plazo mediante cuotas fijas en pesos.";
-            } else if (tipo === 'vehiculo') {
-                lblMonto.textContent = "Monto a Financiar el Vehículo ($ COP)";
-                lblPlazo.textContent = "Plazo de Amortización (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "60000000";
-                document.getElementById('tasaAnual').value = "15.5";
-                document.getElementById('plazo').value = "72";
-                document.getElementById('seguroMes').value = "80000"; // Incluye póliza auto todo riesgo endosada
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> El crédito de vehículo suele exigir pignoración del automotor. Las tasas varían si el carro es nuevo o usado.";
-            } else if (tipo === 'libre') {
-                lblMonto.textContent = "Monto del Crédito de Consumo ($ COP)";
-                lblPlazo.textContent = "Plazo Solicitado (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "20000000";
-                document.getElementById('tasaAnual').value = "22.0";
-                document.getElementById('plazo').value = "48";
-                document.getElementById('seguroMes').value = "15000";
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Libre inversión/Consumo. Tasas más elevadas sujetas al perfil de riesgo. Alerta con la tasa de usura fijada por la Superfinanciera.";
-            } else if (tipo === 'tarjeta') {
-                lblMonto.textContent = "Cupo Utilizado / Avance / Compra ($ COP)";
-                lblPlazo.textContent = "Diferido a Cuotas (Meses)";
-                divCuotaInicial.style.display = 'none';
-                divAmortizacion.style.display = 'none';
-                document.getElementById('montoPrincipal').value = "5000000";
-                document.getElementById('tasaAnual').value = "28.5"; // Cercano a la usura habitual de tarjetas
-                document.getElementById('plazo').value = "24";
-                document.getElementById('seguroMes').value = "6000"; // Seguro de cartera común
-                document.getElementById('infoDinamica').innerHTML = "<strong>Análisis del Sistema:</strong> Compras diferidas a 1 sola cuota por lo general no generan intereses corrientes en Colombia. Evite los avances en efectivo debido a su alto costo inmediato.";
-            }
-            
-            calcularTodo();
-        }
+    <!-- FOOTER -->
+    <footer>
+        <div class="social-icons">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p>&copy; 2026 Dusan Urban. Todos los derechos reservados.</p>
+        <p style="font-size: 0.7rem; color: #444; margin-top: 5px;">Diseñado con elegancia urbana.</p>
+    </footer>
 
-        function calcularTodo() {
-            const montoPrincipal = parseFloat(document.getElementById('montoPrincipal').value) || 0;
-            const cuotaInicial = tipoCreditoActivo === 'hipotecario' ? (parseFloat(document.getElementById('cuotaInicial').value) || 0) : 0;
-            const tasaAnual = parseFloat(document.getElementById('tasaAnual').value) || 0;
-            const plazo = parseInt(document.getElementById('plazo').value) || 0;
-            const seguroMes = parseFloat(document.getElementById('seguroMes').value) || 0;
-
-            const capitalFinanciar = montoPrincipal - cuotaInicial;
-            document.getElementById('resFinanciar').textContent = '$ ' + capitalFinanciar.toLocaleString('es-CO');
-
-            if (capitalFinanciar <= 0 || plazo <= 0 || tasaAnual <= 0) {
-                document.getElementById('resCuotaBase').textContent = "$ 0";
-                document.getElementById('resCuotaTotal').textContent = "$ 0";
-                document.getElementById('resIntereses').textContent = "$ 0";
-                return;
-            }
-
-            // Convertir de Efectiva Anual (E.A) a Mensual Vencida (M.V)
-            const tasaMensual = Math.pow(1 + (tasaAnual / 100), 1 / 12) - 1;
-            document.getElementById('resTasaMes').textContent = (tasaMensual * 100).toFixed(2) + '%';
-
-            // Cálculo de la cuota base usando amortización constante (sistema francés)
-            const cuotaBase = (capitalFinanciar * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazo));
-            const cuotaTotal = cuotaBase + seguroMes;
-            const totalIntereses = (cuotaBase * plazo) - capitalFinanciar;
-
-            document.getElementById('resCuotaBase').textContent = '$ ' + Math.round(cuotaBase).toLocaleString('es-CO');
-            document.getElementById('resSeguro').textContent = '$ ' + Math.round(seguroMes).toLocaleString('es-CO');
-            document.getElementById('resCuotaTotal').textContent = '$ ' + Math.round(cuotaTotal).toLocaleString('es-CO');
-            document.getElementById('resIntereses').textContent = '$ ' + Math.round(totalIntereses).toLocaleString('es-CO');
-        }
-
-        // Listener para recálculo dinámico en cualquier interacción
-        document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('input', calcularTodo);
-        });
-
-        // Inicialización en la carga original
-        calcularTodo();
-    </script>
 </body>
 </html>
